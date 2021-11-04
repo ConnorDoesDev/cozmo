@@ -24,20 +24,21 @@ def get_in_position(robot: cozmo.robot.Robot):
 def cozmo_program(robot: cozmo.robot.Robot):
     current_directory = os.path.dirname(os.path.realpath(__file__))
     get_in_position(robot)
-    zerotwo_png = os.path.join(current_directory, "face-images", "astolfoTea.png")
+    myman = os.path.join(current_directory, "assets", "myman.png")
 
     # load some images and convert them for display cozmo's face
-    image_settings = [(zerotwo_png, Image.BICUBIC)]
+    image_settings = [(myman, Image.BICUBIC)]
     face_images = []
     for image_name, resampling_mode in image_settings:
         image = Image.open(image_name)
 
         # resize to fit on Cozmo's face screen
-        resized_image = image.resize(cozmo.oled_face.dimensions(), resampling_mode)
+        resized_image = image.resize(
+            cozmo.oled_face.dimensions(), resampling_mode)
 
         # convert the image to the format used by the oled screen
         face_image = cozmo.oled_face.convert_image_to_screen_data(resized_image,
-                                                                 invert_image=True)
+                                                                  invert_image=True)
         face_images.append(face_image)
 
     # display each image on Cozmo's face for duration_s seconds (Note: this
@@ -47,7 +48,8 @@ def cozmo_program(robot: cozmo.robot.Robot):
     num_loops = 10
     duration_s = 2.0
 
-    print("Press CTRL-C to quit (or wait %s seconds to complete)" % int(num_loops*duration_s) )
+    print("Press CTRL-C to quit (or wait %s seconds to complete)" %
+          int(num_loops*duration_s))
 
     for _ in range(num_loops):
         for image in face_images:
